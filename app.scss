@@ -1,0 +1,36 @@
+:host { display: block; min-height: 100vh; }
+
+.app-shell { min-height: 100vh; display: flex; background: #f4f7fb; color: #162033; }
+.sidebar { width: 250px; background: #102a43; color: #fff; padding: 24px 16px; display: flex; flex-direction: column; position: fixed; top:0; bottom:0; left:0; z-index:20; transition:.25s ease; }
+.brand { display:flex; gap:12px; align-items:center; padding: 4px 8px 28px; }
+.brand-mark { width:42px; height:42px; border-radius:12px; background:#2f80ed; display:grid; place-items:center; font-size:21px; }
+.brand strong, .brand span { display:block; }
+.brand strong { font-size:17px; }
+.brand span { color:#b8c7d9; font-size:11px; margin-top:2px; }
+nav { display:grid; gap:8px; }
+nav a { color:#d9e5f2; text-decoration:none; display:flex; align-items:center; gap:12px; padding:13px 14px; border-radius:10px; font-size:14px; }
+nav a:hover, nav a.active { background:#173d61; color:#fff; }
+.sidebar-bottom { margin-top:auto; }
+.help-card { background:#173954; border:1px solid #2e5574; border-radius:12px; padding:14px; display:grid; gap:4px; }
+.help-card span { color:#9fb3c8; font-size:11px; }
+.help-card strong { font-size:13px; }
+.help-card small { color:#adc0d2; }
+.main-area { margin-left:250px; width:calc(100% - 250px); }
+.topbar { height:64px; background:#fff; border-bottom:1px solid #e8edf3; display:flex; align-items:center; justify-content:space-between; padding:0 28px; position:sticky; top:0; z-index:10; }
+.topbar-title { font-weight:600; font-size:14px; color:#344054; }
+.topbar-right { display:flex; align-items:center; gap:8px; color:#667085; font-size:12px; }
+.status-dot { width:9px; height:9px; background:#20b26b; border-radius:50%; }
+.menu-button { display:none; border:0; background:none; font-size:22px; }
+.page-container { max-width:1400px; margin:auto; padding:28px; }
+
+@media (max-width: 900px) {
+  .sidebar { transform:translateX(-100%); box-shadow: 8px 0 32px rgba(0,0,0,.15); }
+  .sidebar.open { transform:translateX(0); }
+  .main-area { margin-left:0; width:100%; }
+  .menu-button { display:block; }
+}
+@media (max-width: 600px) {
+  .page-container { padding:18px; }
+  .topbar { padding:0 18px; }
+  .topbar-title { display:none; }
+}

@@ -1,0 +1,40 @@
+@if (!train) {
+  <section class="empty panel"><h2>Train not found</h2><p>The selected train may have been removed.</p><a routerLink="/trains" class="primary">Back to Trains</a></section>
+} @else if (submitted) {
+  <section class="success panel">
+    <div class="check">✓</div>
+    <span class="section-kicker">BOOKING CONFIRMED</span>
+    <h1>Your ticket is confirmed.</h1>
+    <p>{{ train.name }} · {{ train.source }} → {{ train.destination }} · {{ journeyDate | date:'dd MMM yyyy' }}</p>
+    <div class="pnr-card"><span>PNR NUMBER</span><strong>{{ pnr }}</strong><small>Keep this number for your journey.</small></div>
+    <div class="success-actions"><a routerLink="/bookings" class="primary">View My Bookings</a><button class="ghost" (click)="backToTrains()">Book Another Ticket</button></div>
+  </section>
+} @else {
+  <section class="page-title"><div><span class="section-kicker">RESERVATION</span><h1>Book Ticket</h1><p>Enter journey and passenger details for the selected train.</p></div><button class="ghost" (click)="backToTrains()">← Back</button></section>
+
+  <div class="booking-layout">
+    <aside class="panel journey-card">
+      <span class="section-kicker">SELECTED TRAIN</span><div class="number">{{ train.number }}</div><h2>{{ train.name }}</h2>
+      <div class="big-route"><div><strong>{{ train.departure }}</strong><span>{{ train.source }}</span></div><div class="dash">→</div><div class="right"><strong>{{ train.arrival }}</strong><span>{{ train.destination }}</span></div></div>
+      <div class="facts"><div><span>Duration</span><strong>{{ train.duration }}</strong></div><div><span>Seats left</span><strong>{{ train.seats }}</strong></div><div><span>Base fare</span><strong>₹{{ train.fare }}</strong></div></div>
+    </aside>
+
+    <section class="panel form-panel">
+      <div class="section"><h2>Journey details</h2><label>Journey date<input type="date" [(ngModel)]="journeyDate" name="journeyDate"></label></div>
+      <div class="section"><div class="passenger-head"><h2>Passenger details</h2><button class="ghost small" (click)="addPassenger()" [disabled]="passengers.length >= 6">+ Passenger</button></div>
+        @for (passenger of passengers; track $index; let i = $index) {
+          <div class="passenger-row">
+            <div class="passenger-label">{{ i + 1 }}</div>
+            <label>Name<input [(ngModel)]="passenger.name" [name]="'name'+i" placeholder="Full name"></label>
+            <label>Age<input type="number" [(ngModel)]="passenger.age" [name]="'age'+i" min="1" max="120"></label>
+            <label>Gender<select [(ngModel)]="passenger.gender" [name]="'gender'+i"><option>Male</option><option>Female</option><option>Other</option></select></label>
+            <label>Class<select [(ngModel)]="passenger.seatClass" [name]="'class'+i">@for (c of train.classes; track c) {<option [value]="c">{{ c }}</option>}</select></label>
+            @if (passengers.length > 1) { <button class="remove" (click)="removePassenger(i)">Remove</button> }
+          </div>
+        }
+      </div>
+      @if (message) { <div class="error">{{ message }}</div> }
+      <div class="pay-row"><div><span>Estimated total</span><strong>₹{{ totalFare | number:'1.0-0' }}</strong></div><button class="primary" (click)="submit()">Confirm & Book</button></div>
+    </section>
+  </div>
+}

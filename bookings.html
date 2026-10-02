@@ -1,0 +1,15 @@
+<section class="page-title"><div><span class="section-kicker">PASSENGER SERVICES</span><h1>My Bookings</h1><p>View PNRs, journey details, and cancel demo reservations.</p></div><a routerLink="/trains" class="primary">+ New Booking</a></section>
+
+<section class="panel filters"><label>Search<input [(ngModel)]="query" placeholder="Search PNR, train, source or destination"></label><label>Status<select [(ngModel)]="status"><option value="">All</option><option value="Confirmed">Confirmed</option><option value="Cancelled">Cancelled</option></select></label></section>
+
+<section class="booking-list">
+  @for (booking of filtered; track booking.id) {
+    <article class="panel booking-card" [class.cancelled]="booking.status === 'Cancelled'">
+      <div class="booking-top"><div><span class="pnr-label">PNR</span><strong class="pnr">{{ booking.pnr }}</strong></div><span class="status" [class.cancelled-status]="booking.status === 'Cancelled'">{{ booking.status }}</span></div>
+      <div class="train-line"><div><span>{{ booking.trainNumber }}</span><strong>{{ booking.trainName }}</strong></div><div class="route"><strong>{{ booking.source }}</strong><i>→</i><strong>{{ booking.destination }}</strong></div></div>
+      <div class="details"><div><span>Journey date</span><strong>{{ booking.journeyDate | date:'dd MMM yyyy' }}</strong></div><div><span>Passengers</span><strong>{{ booking.passengers.length }}</strong></div><div><span>Class</span><strong>{{ booking.passengers[0]?.seatClass }}</strong></div><div><span>Total fare</span><strong>₹{{ booking.totalFare | number:'1.0-0' }}</strong></div><div><span>Booked on</span><strong>{{ booking.bookingDate | date:'dd MMM yyyy' }}</strong></div><div class="action-cell">@if (booking.status === 'Confirmed') { <button class="cancel-btn" (click)="cancel(booking.id)">Cancel Ticket</button> }</div></div>
+    </article>
+  } @empty {
+    <div class="panel empty"><div class="empty-icon">🎫</div><h2>No bookings found</h2><p>Book a train to see your reservations here.</p><a routerLink="/trains" class="primary">Search Trains</a></div>
+  }
+</section>

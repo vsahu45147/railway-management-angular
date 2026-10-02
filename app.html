@@ -1,0 +1,41 @@
+<div class="app-shell">
+  <aside class="sidebar" [class.open]="menuOpen">
+    <div class="brand">
+      <div class="brand-mark">🚆</div>
+      <div>
+        <strong>RailManage</strong>
+        <span>Railway Management</span>
+      </div>
+    </div>
+
+    <nav>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="menuOpen=false">⌂ <span>Dashboard</span></a>
+      <a routerLink="/trains" routerLinkActive="active" (click)="menuOpen=false">▣ <span>Trains</span></a>
+      <a routerLink="/bookings" routerLinkActive="active" (click)="menuOpen=false">🎫 <span>My Bookings</span></a>
+      <a routerLink="/stations" routerLinkActive="active" (click)="menuOpen=false">⌖ <span>Stations</span></a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="help-card">
+        <span>Need help?</span>
+        <strong>Railway Support</strong>
+        <small>Available 24 × 7</small>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <button class="menu-button" (click)="menuOpen = !menuOpen">☰</button>
+      <div class="topbar-title">Passenger & Operations Portal</div>
+      <div class="topbar-right">
+        <div class="status-dot"></div>
+        <span>System Online</span>
+      </div>
+    </header>
+
+    <main class="page-container">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

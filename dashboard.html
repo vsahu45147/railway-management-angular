@@ -1,0 +1,87 @@
+<section class="hero">
+  <div>
+    <span class="eyebrow">RAILWAY MANAGEMENT SYSTEM</span>
+    <h1>Plan your journey with confidence.</h1>
+    <p>Search trains, book tickets, and manage passengers from one simple portal.</p>
+  </div>
+  <div class="hero-train">🚆</div>
+</section>
+
+<section class="search-card">
+  <div class="search-heading">
+    <div>
+      <span class="section-kicker">TRAVEL SEARCH</span>
+      <h2>Find a train</h2>
+    </div>
+    <a routerLink="/trains">View all trains →</a>
+  </div>
+
+  <form class="search-grid" (ngSubmit)="searchTrains()">
+    <label>
+      <span>From</span>
+      <input name="source" [(ngModel)]="quickSearch.source" placeholder="e.g. Bhubaneswar">
+    </label>
+    <label>
+      <span>To</span>
+      <input name="destination" [(ngModel)]="quickSearch.destination" placeholder="e.g. New Delhi">
+    </label>
+    <label>
+      <span>Journey date</span>
+      <input name="date" type="date" [(ngModel)]="quickSearch.date">
+    </label>
+    <label>
+      <span>Class</span>
+      <select name="seatClass" [(ngModel)]="quickSearch.seatClass">
+        <option value="">All classes</option>
+        <option value="1A">1A</option>
+        <option value="2A">2A</option>
+        <option value="3A">3A</option>
+        <option value="SL">SL</option>
+        <option value="CC">CC</option>
+        <option value="2S">2S</option>
+      </select>
+    </label>
+    <button type="submit" class="primary-btn">Search Trains</button>
+  </form>
+</section>
+
+<section class="stats-grid">
+  @for (stat of stats(); track stat.label) {
+    <article class="stat-card">
+      <div class="stat-icon" [class]="stat.tone">{{ stat.icon }}</div>
+      <div><strong>{{ stat.value }}</strong><span>{{ stat.label }}</span></div>
+    </article>
+  }
+</section>
+
+<section class="content-grid">
+  <article class="panel">
+    <div class="panel-head"><div><span class="section-kicker">SCHEDULE</span><h2>Popular routes</h2></div><a routerLink="/trains">Browse</a></div>
+    <div class="route-list">
+      @for (train of trains().slice(0, 4); track train.id) {
+        <div class="route-row">
+          <div><strong>{{ train.source }}</strong><span>{{ train.departure }}</span></div>
+          <div class="line"><small>{{ train.duration }}</small><i></i></div>
+          <div class="right"><strong>{{ train.destination }}</strong><span>{{ train.arrival }}</span></div>
+        </div>
+      }
+    </div>
+  </article>
+
+  <article class="panel">
+    <div class="panel-head"><div><span class="section-kicker">BOOKINGS</span><h2>Recent activity</h2></div><a routerLink="/bookings">Open</a></div>
+    @if (bookings().length === 0) {
+      <div class="empty">No bookings yet. Search a train and reserve a ticket.</div>
+    } @else {
+      <div class="booking-list">
+        @for (booking of bookings().slice(0, 5); track booking.id) {
+          <div class="booking-mini">
+            <div class="pnr">{{ booking.pnr }}</div>
+            <div><strong>{{ booking.trainName }}</strong><span>{{ booking.source }} → {{ booking.destination }}</span></div>
+            <span class="status" [class.cancelled]="booking.status === 'Cancelled'">{{ booking.status }}</span>
+          </div>
+        }
+      </div>
+    }
+  </article>
+</section>

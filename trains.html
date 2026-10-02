@@ -1,0 +1,45 @@
+<section class="page-title"><div><span class="section-kicker">TRAIN OPERATIONS</span><h1>Train Management</h1><p>Search schedules or maintain the demo train inventory.</p></div><button class="primary" (click)="showForm = !showForm">{{ showForm ? 'Close Form' : '+ Add Train' }}</button></section>
+
+@if (message) { <div class="alert">{{ message }}</div> }
+
+@if (showForm) {
+  <form class="panel form-panel" (ngSubmit)="addTrain()">
+    <div class="panel-title"><h2>Add a train</h2><span>Required fields are marked by context.</span></div>
+    <div class="form-grid">
+      <label>Train number<input name="number" [(ngModel)]="form.number" placeholder="12801"></label>
+      <label>Train name<input name="name" [(ngModel)]="form.name" placeholder="Express name"></label>
+      <label>Source<input name="source" [(ngModel)]="form.source" placeholder="Bhubaneswar"></label>
+      <label>Destination<input name="destination" [(ngModel)]="form.destination" placeholder="New Delhi"></label>
+      <label>Departure<input name="departure" [(ngModel)]="form.departure" type="time"></label>
+      <label>Arrival<input name="arrival" [(ngModel)]="form.arrival" type="time"></label>
+      <label>Duration<input name="duration" [(ngModel)]="form.duration" placeholder="8h 15m"></label>
+      <label>Fare (₹)<input name="fare" [(ngModel)]="form.fare" type="number" min="0"></label>
+      <label>Seats<input name="seats" [(ngModel)]="form.seats" type="number" min="1"></label>
+      <label>Classes<input name="classesText" [(ngModel)]="form.classesText" placeholder="SL, 3A, 2A"></label>
+      <label class="wide">Operating days<input name="daysText" [(ngModel)]="form.daysText" placeholder="Mon, Tue, Wed"></label>
+    </div>
+    <button class="primary" type="submit">Save Train</button>
+  </form>
+}
+
+<section class="panel filter-panel">
+  <div class="filter-grid">
+    <label>From<input name="sourceSearch" [(ngModel)]="search.source" placeholder="Source station"></label>
+    <label>To<input name="destinationSearch" [(ngModel)]="search.destination" placeholder="Destination station"></label>
+    <label>Date<input name="dateSearch" [(ngModel)]="search.date" type="date"></label>
+    <label>Class<select name="classSearch" [(ngModel)]="search.seatClass"><option value="">All</option><option>1A</option><option>2A</option><option>3A</option><option>SL</option><option>CC</option><option>EC</option><option>2S</option></select></label>
+    <div class="filter-actions"><button class="primary" (click)="searchTrains()">Search</button><button class="ghost" (click)="reset()">Reset</button></div>
+  </div>
+</section>
+
+<section class="train-grid">
+  @for (train of filtered; track train.id) {
+    <article class="train-card">
+      <div class="train-head"><div><span class="train-number">{{ train.number }}</span><h2>{{ train.name }}</h2></div><span class="badge" [class.delayed]="train.status === 'Delayed'">{{ train.status }}</span></div>
+      <div class="route"><div><strong>{{ train.departure }}</strong><span>{{ train.source }}</span></div><div class="route-line"><small>{{ train.duration }}</small><i></i></div><div class="to"><strong>{{ train.arrival }}</strong><span>{{ train.destination }}</span></div></div>
+      <div class="train-footer"><div><span>From</span><strong>₹{{ train.fare }}</strong></div><div><span>Classes</span><strong>{{ train.classes.join(' · ') }}</strong></div><div><span>Seats</span><strong>{{ train.seats }}</strong></div><div class="card-actions"><a [routerLink]="['/book', train.id]" class="book-btn">Book</a><button class="icon-btn" title="Delete" (click)="deleteTrain(train.id)">✕</button></div></div>
+    </article>
+  } @empty {
+    <div class="empty panel">No matching trains found. Try another route or date.</div>
+  }
+</section>

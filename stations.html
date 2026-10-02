@@ -1,0 +1,7 @@
+<section class="page-title"><div><span class="section-kicker">NETWORK DIRECTORY</span><h1>Stations</h1><p>Browse major stations included in this demo network.</p></div></section>
+<section class="panel filters"><label>Search stations<input [(ngModel)]="query" placeholder="Station name, code, city, state or zone"></label></section>
+<section class="station-grid">
+  @for (station of filtered; track station.code) {
+    <article class="station-card panel"><div class="code">{{ station.code }}</div><h2>{{ station.name }}</h2><p>{{ station.city }}, {{ station.state }}</p><div class="station-meta"><span><strong>{{ station.platforms }}</strong> Platforms</span><span><strong>{{ station.zone }}</strong> Zone</span></div></article>
+  } @empty { <div class="panel empty">No station matched your search.</div> }
+</section>
